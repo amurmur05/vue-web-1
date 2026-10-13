@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { House } from '@lucide/vue'
+import { House, Menu } from '@lucide/vue'
 import Carrus from '@/components/Carrus.vue'
+import { Toggle } from '@/components/ui/toggle'
 import { scrollToSection } from '@/utils/scrollToSection'
 import {
   NavigationMenu,
@@ -10,6 +12,8 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
+
+const menuOpen = ref(false)
 
 const menu = [
   { text: 'Portada', target: '#' },
@@ -44,13 +48,31 @@ const vehicles = [
       'Irure adipisicing est minim eu ad dolor. Eu ea commodo pariatur ut occaecat in cupidatat reprehenderit ut laborum duis. Sunt minim ex fugiat reprehenderit. Lorem consectetur reprehenderit commodo non.',
   },
 ]
+
+const navigate = (target: string) => {
+  scrollToSection(target)
+  menuOpen.value = false
+}
 </script>
 
 <template>
   <div class="batman">
+    <Toggle
+      aria-label="Apri o chiudi il menu"
+      aria-controls="batman-menu"
+      :aria-expanded="menuOpen"
+      class="fixed right-4 top-2 z-50 bg-slate-500
+             text-white sm:hidden"
+      @click="menuOpen = !menuOpen"
+    >
+      <Menu />
+    </Toggle>
+
     <nav
-      class="extra-nav flex flex-col justify-between px-3
+      id="batman-menu"
+      class="extra-nav flex-col justify-between px-3
              sm:flex-row sm:items-center"
+      :class="menuOpen ? 'flex' : 'hidden sm:flex'"
     >
       <RouterLink to="/domus" aria-label="Home">
         <House class="icon-home" />
@@ -68,7 +90,7 @@ const vehicles = [
                 navigationMenuTriggerStyle(),
                 'hover:bg-purple-600 hover:text-white transition-colors',
               ]"
-              @click.prevent="scrollToSection(link.target)"
+              @click.prevent="navigate(link.target)"
             >
               {{ link.text }}
             </NavigationMenuLink>
