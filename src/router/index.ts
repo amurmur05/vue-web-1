@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+
 import Servicios from '../components/Servicios.vue'
 import Home from '../components/Home.vue'
 import Domus from '../paginae/Domus.vue'
@@ -11,6 +12,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      component: Domus,
+    },
+    {
+      path: '/home',
       component: Home,
     },
     {
@@ -22,17 +27,17 @@ const router = createRouter({
       component: Domus,
     },
     {
-  path: '/batman',
-  component: Batman,
-},
-{
-  path: '/simpsons',
-  component: Simpsons,
-},
-{
-  path: '/responsum',
-  component: Responsum,
-},
+      path: '/batman',
+      component: Batman,
+    },
+    {
+      path: '/simpsons',
+      component: Simpsons,
+    },
+    {
+      path: '/responsum',
+      component: Responsum,
+    },
   ],
 })
 
