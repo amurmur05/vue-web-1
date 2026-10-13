@@ -443,3 +443,10 @@ code {
     @apply bg-background text-foreground;
   }
 }
+body {
+  font-family: "Lexend", sans-serif;
+}
+@font-face {
+  font-family: "batman";
+  src: url("/fonts/batmfo__.ttf") format("truetype");
+}
