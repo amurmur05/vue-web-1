@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { House } from '@lucide/vue'
+import Carrus from '@/components/Carrus.vue'
+import { scrollToSection } from '@/utils/scrollToSection'
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -9,128 +11,109 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 
-const scrollToSection = (sectionId: string) => {
-  if (sectionId === '#') {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-    return
-  }
+const menu = [
+  { text: 'Portada', target: '#' },
+  { text: 'Vehículos', target: '#vehiculis' },
+  { text: 'Imágenes', target: '#videre' },
+  { text: 'Contacto', target: '#contactus' },
+]
 
-  const element = document.getElementById(sectionId.replace(/^#/, ''))
-
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-  }
-}
+const vehicles = [
+  {
+    name: 'Avión',
+    className: 'unus',
+    image: 'avion',
+    year: 2005,
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vehicula vulputate elit eget fermentum. Ut laoreet ante lacus. Quisque ut tincidunt metus. Curabitur congue, arcu nec tempus sodales, neque sem ultrices mauris, eu tincidunt nibh nibh eu massa. Aenean rhoncus quis nibh ac facilisis.',
+  },
+  {
+    name: 'Moto',
+    className: 'duo',
+    image: 'moto',
+    year: 2006,
+    description:
+      'Nulla aliquip cupidatat voluptate veniam nostrud aliquip sit enim officia. Sit eu pariatur officia qui dolor adipisicing cupidatat. Sit consectetur et eu ut esse laboris nulla.',
+  },
+  {
+    name: 'Coche',
+    className: 'tribus',
+    image: 'car',
+    year: 2007,
+    description:
+      'Irure adipisicing est minim eu ad dolor. Eu ea commodo pariatur ut occaecat in cupidatat reprehenderit ut laborum duis. Sunt minim ex fugiat reprehenderit. Lorem consectetur reprehenderit commodo non.',
+  },
+]
 </script>
 
 <template>
   <div class="batman">
-    <div class="extra-nav">
-      <RouterLink to="/domus" aria-label="Torna alla pagina iniziale">
+    <nav
+      class="extra-nav flex flex-col justify-between px-3
+             sm:flex-row sm:items-center"
+    >
+      <RouterLink to="/domus" aria-label="Home">
         <House class="icon-home" />
       </RouterLink>
 
       <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <a href="#" @click.prevent="scrollToSection('#')">
-              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                Portada
-              </NavigationMenuLink>
-            </a>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <a
-              href="#vehiculis"
-              @click.prevent="scrollToSection('#vehiculis')"
+        <NavigationMenuList class="flex flex-col sm:flex-row">
+          <NavigationMenuItem
+            v-for="link in menu"
+            :key="link.target"
+          >
+            <NavigationMenuLink
+              :href="link.target"
+              :class="[
+                navigationMenuTriggerStyle(),
+                'hover:bg-purple-600 hover:text-white transition-colors',
+              ]"
+              @click.prevent="scrollToSection(link.target)"
             >
-              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                Vehículos
-              </NavigationMenuLink>
-            </a>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <a href="#videre" @click.prevent="scrollToSection('#videre')">
-              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                Imágenes
-              </NavigationMenuLink>
-            </a>
-          </NavigationMenuItem>
-
-          <NavigationMenuItem>
-            <a
-              href="#contactus"
-              @click.prevent="scrollToSection('#contactus')"
-            >
-              <NavigationMenuLink :class="navigationMenuTriggerStyle()">
-                Contacto
-              </NavigationMenuLink>
-            </a>
+              {{ link.text }}
+            </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-    </div>
+    </nav>
 
     <header class="titulus">
       <h1>Batman</h1>
-      <div id="titulus-batman" class="titulus-img"></div>
+      <div class="titulus-img"></div>
       <p>
-        Él puede tomar la decisión que nadie más puede, la decisión correcta.
+        Él puede tomar la decisión que nadie más puede,
+        la decisión correcta.
       </p>
     </header>
 
     <section id="vehiculis">
       <div class="vehiculis-arca">
-        <div class="item unus">
+        <article
+          v-for="vehicle in vehicles"
+          :key="vehicle.image"
+          :class="['item', vehicle.className]"
+        >
           <div class="notitia">
-            <h2>Avión</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Sed vehicula vulputate elit eget fermentum. Ut laoreet ante
-              lacus. Quisque ut tincidunt metus. Curabitur congue, arcu
-              nec tempus sodales, neque sem ultrices mauris, eu tincidunt
-              nibh nibh eu massa. Aenean rhoncus quis nibh ac facilisis.
-            </p>
-            <small>Fabricado en 2005</small>
+            <h2>{{ vehicle.name }}</h2>
+            <p>{{ vehicle.description }}</p>
+            <small>Fabricado en {{ vehicle.year }}</small>
           </div>
-          <img src="/imagines/batman/avion.jpg" alt="Avión de Batman" />
-        </div>
 
-        <div class="item duo">
-          <div class="notitia">
-            <h2>Moto</h2>
-            <p>
-              Nulla aliquip cupidatat voluptate veniam nostrud aliquip
-              sit enim officia. Sit eu pariatur officia qui dolor
-              adipisicing cupidatat. Sit consectetur et eu ut esse
-              laboris nulla.
-            </p>
-            <small>Fabricado en 2006</small>
-          </div>
-          <img src="/imagines/batman/moto.jpg" alt="Moto de Batman" />
-        </div>
-
-        <div class="item tribus">
-          <div class="notitia">
-            <h2>Coche</h2>
-            <p>
-              Irure adipisicing est minim eu ad dolor. Eu ea commodo
-              pariatur ut occaecat in cupidatat reprehenderit ut laborum
-              duis. Sunt minim ex fugiat reprehenderit. Lorem consectetur
-              reprehenderit commodo non
-            </p>
-            <small>Fabricado en 2007</small>
-          </div>
-          <img src="/imagines/batman/car.jpg" alt="Coche de Batman" />
-        </div>
+          <img
+            :src="`/imagines/batman/${vehicle.image}.jpg`"
+            :alt="`${vehicle.name} de Batman`"
+          />
+        </article>
       </div>
 
       <div class="vehiculis-titulus">
         <h1>Vehículos de Batman</h1>
       </div>
     </section>
+
+    <div id="videre">
+      <Carrus />
+    </div>
   </div>
 </template>
 
@@ -155,18 +138,10 @@ const scrollToSection = (sectionId: string) => {
   opacity: 0.7;
   position: fixed;
   top: 0;
+  left: 0;
   width: 11rem;
   border-radius: 0 0 1rem 0;
-  z-index: 1;
-}
-
-@media (min-width: 640px) {
-  .extra-nav {
-    width: 100%;
-    border-radius: 0;
-    opacity: 1;
-    left: 0;
-  }
+  z-index: 10;
 }
 
 .titulus {
@@ -174,9 +149,9 @@ const scrollToSection = (sectionId: string) => {
 }
 
 .titulus-img {
-  background-size: 100% 100%;
-  background-position: center center;
   background-image: url("/imagines/batman/batman.jpg");
+  background-size: 100% 100%;
+  background-position: center;
   min-height: 100vh;
 }
 
@@ -207,45 +182,70 @@ const scrollToSection = (sectionId: string) => {
   display: none;
 }
 
-@media (min-width: 768px) {
-  .titulus > p {
-    display: block;
-  }
-}
-
 #vehiculis {
   max-width: 510px;
   margin: 0 auto;
   padding: 4rem 0;
+  display: flex;
+  flex-direction: column;
+  scroll-margin-top: 4rem;
+}
+
+#videre {
+  scroll-margin-top: 4rem;
 }
 
 .vehiculis-titulus {
-  height: 5.5rem;
+  min-height: 5.5rem;
   font-size: 2rem;
   background-color: rgba(0, 0, 0, 0.7);
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.vehiculis-arca {
+  order: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .item {
   padding: 1.5rem 0;
-  height: 500px;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.item > img {
+  width: 450px;
+  max-width: 90%;
+  height: auto;
+  object-fit: contain;
 }
 
 .unus {
   background-color: rgba(220, 220, 220, 0.2);
+  order: 2;
 }
 
 .duo {
-  background-color: rgba(220, 220, 220, 0.3);
+  background-color: rgba(220, 220, 220, 0.8);
 }
 
 .tribus {
   background-color: rgba(220, 220, 220, 0.8);
+  order: 3;
 }
 
-.notitia > small {
-  font-weight: bold;
-  padding: 1rem;
+.notitia {
+  width: 90%;
 }
 
 .notitia > h2 {
@@ -253,5 +253,80 @@ const scrollToSection = (sectionId: string) => {
   font-weight: 600;
   color: rgba(0, 0, 0, 0.7);
   padding-bottom: 1rem;
+  text-align: center;
+}
+
+.notitia > small {
+  display: block;
+  font-weight: bold;
+  padding: 1rem;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .extra-nav {
+    width: 100%;
+    border-radius: 0;
+    opacity: 1;
+  }
+
+  #vehiculis {
+    max-width: 576px;
+  }
+}
+
+@media (min-width: 768px) {
+  .titulus > p {
+    display: block;
+  }
+
+  #vehiculis {
+    max-width: 900px;
+  }
+
+  .item {
+    flex-direction: row;
+    min-height: 320px;
+  }
+
+  .notitia {
+    width: 40%;
+  }
+
+  .item > img {
+    max-width: 50%;
+  }
+
+  .unus > img {
+    order: -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  #vehiculis {
+    max-width: 1280px;
+  }
+
+  .vehiculis-arca {
+    flex-direction: row;
+  }
+
+  .item {
+    flex: 1;
+    flex-direction: column;
+    min-height: 560px;
+  }
+
+  .notitia {
+    width: 90%;
+  }
+
+  .item > img {
+    max-width: 90%;
+  }
+
+  .unus > img {
+    order: 0;
+  }
 }
 </style>
