@@ -92,6 +92,7 @@ import { Button } from '@/components/ui/button'
   object-fit: contain;
   pointer-events: none;
   z-index: -1;
+  opacity: 0.2;
 }
 
 main {
