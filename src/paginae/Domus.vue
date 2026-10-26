@@ -4,44 +4,67 @@ import { Button } from '@/components/ui/button'
 </script>
 
 <template>
-  <div class="fondo-home">
-   <h1>
-  <span>Diseño</span> Web y
-  <br />
-  Apps <span>Interactivas</span>
-</h1>
-    <div class="botones">
-      <Button variant="default">
+  <main
+    class="flex min-h-screen flex-col items-center justify-center
+           gap-12 bg-[rgb(21,25,52)] px-6 py-12
+           text-center font-sans text-white"
+  >
+    <h1
+      class="text-5xl font-bold leading-tight transition-all
+             md:text-7xl lg:text-8xl"
+    >
+      <span class="text-[rgb(24,182,246)]">Diseño</span> Web y
+      <br />
+      Apps
+      <span class="text-[rgb(24,182,246)]">Interactivas</span>
+    </h1>
+
+    <p class="text-lg transition-all md:text-2xl lg:text-3xl">
+      Aprendiendo a crear aplicaciones web
+    </p>
+
+    <div class="flex flex-wrap justify-center gap-3">
+      <Button
+        as-child
+        class="bg-[rgb(24,182,246)] text-white
+               hover:bg-[rgba(24,182,246,0.7)]
+               md:px-6 md:py-5 md:text-lg"
+      >
         <RouterLink to="/responsum">Sí o No</RouterLink>
       </Button>
 
-      <Button variant="default">
+      <Button
+        as-child
+        class="bg-[rgb(24,182,246)] text-white
+               hover:bg-[rgba(24,182,246,0.7)]
+               md:px-6 md:py-5 md:text-lg"
+      >
         <RouterLink to="/batman">Batman</RouterLink>
       </Button>
 
-      <Button variant="default">
+      <Button
+        as-child
+        class="bg-[rgb(24,182,246)] text-white
+               hover:bg-[rgba(24,182,246,0.7)]
+               md:px-6 md:py-5 md:text-lg"
+      >
         <RouterLink to="/simpsons">Simpsons</RouterLink>
       </Button>
-      <Button variant="default">
-  <a href="https://www.upv.es">UPV</a>
-</Button>
+
+      <Button
+        as-child
+        class="bg-[rgb(24,182,246)] text-white
+               hover:bg-[rgba(24,182,246,0.7)]
+               md:px-6 md:py-5 md:text-lg"
+      >
+        <a
+          href="https://www.upv.es/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          UPV
+        </a>
+      </Button>
     </div>
-  </div>
+  </main>
 </template>
-
-<style scoped>
-.fondo-home {
-  background-color: rgb(21, 25, 52);
-  height: 100vh;
-  color: rgb(24, 182, 246);
-}
-
-.botones > button {
-  background-color: rgb(24, 182, 246);
-  margin-right: 0.5rem;
-}
-
-.botones > button:hover {
-  background-color: rgba(24, 182, 246, 0.7);
-}
-</style>
