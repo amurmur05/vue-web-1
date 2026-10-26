@@ -4,6 +4,13 @@ import { Button } from '@/components/ui/button'
 </script>
 
 <template>
+  <div class="home-page">
+  <img
+    class="home-background"
+    src="/imagines/tonitrui.png"
+    alt=""
+    aria-hidden="true"
+  />
   <main
     class="flex min-h-screen flex-col items-center justify-center
            gap-12 bg-[rgb(21,25,52)] px-6 py-12
@@ -67,4 +74,31 @@ import { Button } from '@/components/ui/button'
       </Button>
     </div>
   </main>
+  </div>
 </template>
+<style scoped>
+.home-page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background-color: rgb(21, 25, 52);
+}
+
+.home-background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: -1;
+}
+
+main {
+  background-color: transparent;
+}
+
+main > h1 {
+  color: white;
+}
+</style>
