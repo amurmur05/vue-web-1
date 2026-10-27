@@ -1,26 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
-import { House, Menu } from '@lucide/vue'
 import Carrus from '@/components/Carrus.vue'
-import { Toggle } from '@/components/ui/toggle'
+import NavigatioPrimarius from '@/components/NavigatioPrimarius.vue'
+import { useMouseMotio } from '@/composables/useMouseMotio'
 import { scrollToSection } from '@/utils/scrollToSection'
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from '@/components/ui/navigation-menu'
 
-const menuOpen = ref(false)
-
-const menu = [
-  { text: 'Portada', target: '#' },
-  { text: 'Vehículos', target: '#vehiculis' },
-  { text: 'Imágenes', target: '#videre' },
-  { text: 'Contacto', target: '#contactus' },
-]
+const { mousePositione, cumMouseMove, cumMouseLeave } = useMouseMotio()
 
 const vehicles = [
   {
@@ -48,60 +32,49 @@ const vehicles = [
       'Irure adipisicing est minim eu ad dolor. Eu ea commodo pariatur ut occaecat in cupidatat reprehenderit ut laborum duis. Sunt minim ex fugiat reprehenderit. Lorem consectetur reprehenderit commodo non.',
   },
 ]
-
-const navigate = (target: string) => {
-  scrollToSection(target)
-  menuOpen.value = false
-}
+const menuItems = [
+  {
+    label: 'Portada',
+    href: '#',
+    onClick: () => scrollToSection('#'),
+  },
+  {
+    label: 'Vehículos',
+    href: '#vehiculis',
+    onClick: () => scrollToSection('#vehiculis'),
+  },
+  {
+    label: 'Imágenes',
+    href: '#videre',
+    onClick: () => scrollToSection('#videre'),
+  },
+  {
+    label: 'Contacto',
+    href: '#contactus',
+    onClick: () => scrollToSection('#contactus'),
+  },
+]
 </script>
+
+
 
 <template>
   <div class="batman">
-    <Toggle
-      aria-label="Apri o chiudi il menu"
-      aria-controls="batman-menu"
-      :aria-expanded="menuOpen"
-      class="fixed right-4 top-2 z-50 bg-slate-500
-             text-white sm:hidden"
-      @click="menuOpen = !menuOpen"
-    >
-      <Menu />
-    </Toggle>
-
-    <nav
-      id="batman-menu"
-      class="extra-nav flex-col justify-between px-3
-             sm:flex-row sm:items-center"
-      :class="menuOpen ? 'flex' : 'hidden sm:flex'"
-    >
-      <RouterLink to="/domus" aria-label="Home">
-        <House class="icon-home" />
-      </RouterLink>
-
-      <NavigationMenu>
-        <NavigationMenuList class="flex flex-col sm:flex-row">
-          <NavigationMenuItem
-            v-for="link in menu"
-            :key="link.target"
-          >
-            <NavigationMenuLink
-              :href="link.target"
-              :class="[
-                navigationMenuTriggerStyle(),
-                'hover:bg-purple-600 hover:text-white transition-colors',
-              ]"
-              @click.prevent="navigate(link.target)"
-            >
-              {{ link.text }}
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-    </nav>
+    <NavigatioPrimarius :items="menuItems" home-route="/domus" />
 
     <header class="titulus">
       <h1>Batman</h1>
-      <div class="titulus-img"></div>
+     <div
+  id="titulus-batman"
+  class="titulus-img"
+  @mousemove="cumMouseMove"
+  @mouseleave="cumMouseLeave"
+  :style="{
+    backgroundPositionX: `calc(50% + ${mousePositione.x}px)`,
+    backgroundPositionY: `calc(50% + ${mousePositione.y}px)`,
+    transition: 'background-position 0.1s ease-out',
+  }"
+></div>
       <p>
         Él puede tomar la decisión que nadie más puede,
         la decisión correcta.
@@ -174,7 +147,7 @@ const navigate = (target: string) => {
   background-image: url("/imagines/batman/batman.jpg");
   background-size: 100% 100%;
   background-position: center;
-  min-height: 100vh;
+  aspect-ratio: 8 / 7;
 }
 
 .titulus-img:hover {
@@ -183,7 +156,7 @@ const navigate = (target: string) => {
 
 .titulus > h1 {
   position: absolute;
-  top: 63%;
+ top: calc(100vw * 0.5);
   width: 100%;
   text-align: center;
   font-size: 5rem;
@@ -194,7 +167,7 @@ const navigate = (target: string) => {
 
 .titulus > p {
   position: absolute;
-  top: 36%;
+  top: calc(100vw * 0.25);
   width: 100%;
   text-align: center;
   font-size: 2rem;
