@@ -3,6 +3,25 @@ import Carrus from '@/components/Carrus.vue'
 import NavigatioPrimarius from '@/components/NavigatioPrimarius.vue'
 import { useMouseMotio } from '@/composables/useMouseMotio'
 import { scrollToSection } from '@/utils/scrollToSection'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { shallowRef } from 'vue'
+import type { DateValue } from '@internationalized/date'
 
 const { mousePositione, cumMouseMove, cumMouseLeave } = useMouseMotio()
 
@@ -54,6 +73,7 @@ const menuItems = [
     onClick: () => scrollToSection('#contactus'),
   },
 ]
+const dies = shallowRef<DateValue>()
 </script>
 
 
@@ -108,6 +128,157 @@ const menuItems = [
 
     <div id="videre">
       <Carrus />
+      <section id="contactus" class="w-full py-12 bg-gray-100">
+
+  <div class="container mx-auto max-w-5xl px-4">
+
+    <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">Contacta con Batman</h2>
+          
+    <div class="flex flex-col lg:flex-row gap-8 items-center">
+
+            <!-- Mapa de Google Maps -->
+      <div class="hidden lg:block w-full lg:w-1/2 rounded-lg overflow-hidden shadow-lg">
+        <div class="aspect-square">
+          <iframe
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3079.3627597518!2d-0.3489032094454206!3d39.48372259839009!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd60488259073375%3A0xfb410ba707ca33c9!2sUPV%20-%20Facultat%20de%20Belles%20Arts!5e0!3m2!1sit!2ses!4v1793106346381!5m2!1sit!2ses"
+  title="Mappa della Facoltà di Belle Arti UPV"
+  class="w-full h-full rounded-lg"
+  style="border: 0"
+  allowfullscreen
+  loading="lazy"
+  referrerpolicy="strict-origin-when-cross-origin"
+></iframe>
+        </div>
+      </div>
+
+            <!-- Formulario -->
+      <div class="w-full max-w-md mx-auto lg:max-w-none lg:w-1/2 ">
+        <form  class="space-y-6 bg-white p-8 rounded-lg shadow-lg aspect-square">
+          <div class="space-y-2">
+                  
+           <Label for="nomen">Nombre</Label>
+           <Input id="nomen" name="nombre" type="text" required />
+
+          </div>
+                
+          <div class="space-y-2">
+              
+           <div class="space-y-2">
+  <Label for="cognomen">Apellidos</Label>
+  <Input
+    id="cognomen"
+    name="apellidos"
+    type="text"
+    required
+  />
+</div>
+
+<div class="space-y-2">
+  <Label for="email">Correo</Label>
+  <Input
+    id="email"
+    name="email"
+    type="email"
+    required
+  />
+</div>
+
+          </div>
+
+          <div class="space-y-2">
+  <Label>Fecha de la misión</Label>
+
+  <Popover>
+    <PopoverTrigger as-child>
+      <Button type="button" variant="outline">
+        <span v-if="dies">
+          {{ dies.day }}/{{ dies.month }}/{{ dies.year }}
+        </span>
+        <span v-else>
+          Selecciona una fecha
+        </span>
+      </Button>
+    </PopoverTrigger>
+
+    <PopoverContent class="w-auto p-0">
+      <Calendar v-model="dies" />
+    </PopoverContent>
+  </Popover>
+</div>
+
+          <div class="space-y-2">
+
+            <Label for="message">Mensaje</Label>
+<Textarea
+  id="message"
+  name="mensaje"
+  required
+/>
+
+          </div>
+<div class="space-y-2">
+  <Label>Fecha de la misión</Label>
+
+  <Popover>
+    <PopoverTrigger as-child>
+      <Button type="button" variant="outline">
+        Selecciona una fecha
+      </Button>
+    </PopoverTrigger>
+
+    <PopoverContent class="w-auto p-0">
+      <Calendar />
+    </PopoverContent>
+  </Popover>
+</div>
+          Poner un botón para enviar la solicitud
+              
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="w-full bg-gray-900 text-gray-300 py-12">
+   <div class="flex flex-col md:flex-row md:justify-around gap-8 max-w-3xl mx-auto">
+
+    <div class="space-y-4 text-center md:text-left">
+
+      <h3 class="text-xl font-bold text-white">Información de Contacto</h3>
+            
+        <div class="space-y-2">
+          <p class="flex items-center gap-2 justify-center md:justify-start">
+
+            +1 (555) 123-4567
+
+          </p>
+          <p class="flex items-center gap-2 justify-center md:justify-start">
+
+            batman@wayneenterprises.com
+
+          </p>
+          <p class="flex items-center gap-2 justify-center md:justify-start">
+
+            Wayne Manor, Gotham City
+
+          </p>
+        </div>
+      </div>
+
+      <!-- Redes sociales -->
+      <div class="space-y-4 text-center md:text-left text-gray-400">
+        <h3 class="text-xl font-bold text-white">Síguenos</h3>
+        <div class="flex gap-8 justify-center">
+        
+          Icono de X -
+          Icono de Instagram -
+          Icono de Linkedin - 
+          Icono de MessageCircle
+              
+        </div>
+    </div>
+  </div>
+</footer>
     </div>
   </div>
 </template>
