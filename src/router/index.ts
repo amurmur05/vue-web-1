@@ -6,10 +6,14 @@ import Domus from '../paginae/Domus.vue'
 import Batman from '../paginae/Batman.vue'
 import Simpsons from '../paginae/Simpsons.vue'
 import Responsum from '../paginae/Responsum.vue'
+import Grid from '../paginae/Grid.vue'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
-  routes: [
+  routes: [{
+  path: '/grid',
+  component: Grid,
+},
     {
       path: '/',
       component: Domus,

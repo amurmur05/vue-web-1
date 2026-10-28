@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
+import { h, ref, shallowRef } from 'vue'
 import type { DateValue } from '@internationalized/date'
-
+import { toast } from 'vue-sonner'
 import Carrus from '@/components/Carrus.vue'
 import NavigatioPrimarius from '@/components/NavigatioPrimarius.vue'
 import { useMouseMotio } from '@/composables/useMouseMotio'
 import { scrollToSection } from '@/utils/scrollToSection'
-
+import {
+  Loader2,
+  Mail,
+  MapPin,
+  Phone,
+  X,
+  MessageCircle,
+  BadgeCheck,
+} from '@lucide/vue'
+import { Icon } from '@iconify/vue'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
@@ -78,6 +87,55 @@ const vehicles = [
       'Irure adipisicing est minim eu ad dolor. Eu ea commodo pariatur ut occaecat in cupidatat reprehenderit ut laborum duis. Sunt minim ex fugiat reprehenderit. Lorem consectetur reprehenderit commodo non.',
   },
 ]
+const estLoading = ref(false)
+
+const mittereSubmit = async () => {
+  if (estLoading.value) return
+
+  estLoading.value = true
+
+  try {
+    await new Promise<void>((resolve) => {
+      setTimeout(resolve, 2000)
+    })
+
+    const dataMissione = dies.value
+      ? `${dies.value.day}/${dies.value.month}/${dies.value.year}`
+      : 'No especificada'
+
+    toast.success('Solicitud enviada correctamente', {
+      description:
+        `Nombre: ${nomen.value} ${cognomen.value}\n` +
+        `Misión: ${missio.value}\n` +
+        `Fecha: ${dataMissione}`,
+      duration: 4000,
+      position: 'top-right',
+      icon: h(BadgeCheck, { class: 'h-5 w-5' }),
+      style: {
+        background: '#201c3b',
+        color: '#ffffff',
+        whiteSpace: 'pre-wrap',
+      },
+    })
+
+    console.log('Formulario enviado:', {
+      dies: dies.value,
+      nomen: nomen.value,
+      cognomen: cognomen.value,
+      missio: missio.value,
+    })
+
+    nomen.value = ''
+    cognomen.value = ''
+    missio.value = ''
+  } finally {
+    estLoading.value = false
+  }
+}
+const nomen = ref('')
+const cognomen = ref('')
+const missio = ref('')
+
 </script>
 
 <template>
@@ -161,135 +219,167 @@ const vehicles = [
           <!-- Formulario -->
           <div class="mx-auto w-full max-w-md lg:w-1/2 lg:max-w-none">
             <form
-              class="aspect-square space-y-6 rounded-lg bg-white p-8 shadow-lg"
-            >
-              <div class="space-y-2">
-                <Label for="nomen">Nombre</Label>
-                <Input
-                  id="nomen"
-                  name="nombre"
-                  type="text"
-                  required
-                />
-              </div>
+  class="aspect-square space-y-6 rounded-lg bg-white p-8 shadow-lg"
+  @submit.prevent="mittereSubmit"
+>
+  <div class="space-y-2">
+    <Label for="nomen">Nombre</Label>
+    <Input
+      id="nomen"
+      v-model="nomen"
+      name="nombre"
+      type="text"
+      required
+    />
+  </div>
 
-              <div class="space-y-2">
-                <Label for="cognomen">Apellidos</Label>
-                <Input
-                  id="cognomen"
-                  name="apellidos"
-                  type="text"
-                  required
-                />
-              </div>
+  <div class="space-y-2">
+    <Label for="cognomen">Apellidos</Label>
+    <Input
+      id="cognomen"
+      v-model="cognomen"
+      name="apellidos"
+      type="text"
+      required
+    />
+  </div>
 
-              <div class="space-y-2">
-                <Label for="email">Correo</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                />
-              </div>
+  <div class="space-y-2">
+    <Label for="email">Correo</Label>
+    <Input
+      id="email"
+      name="email"
+      type="email"
+      required
+    />
+  </div>
 
-              <div class="space-y-2">
-                <Label for="missio">Misión</Label>
+  <div class="space-y-2">
+    <Label for="missio">Misión</Label>
 
-                <Select name="mision" required>
-                  <SelectTrigger id="missio" class="w-full">
-                    <SelectValue placeholder="Selecciona una misión" />
-                  </SelectTrigger>
+    <Select v-model="missio" name="mision" required>
+      <SelectTrigger id="missio" class="w-full">
+        <SelectValue placeholder="Selecciona una misión" />
+      </SelectTrigger>
 
-                  <SelectContent>
-                    <SelectItem value="investigare">
-                      Investigación criminal
-                    </SelectItem>
-                    <SelectItem value="persequi">
-                      Persecución de villanos
-                    </SelectItem>
-                    <SelectItem value="defendere">
-                      Defensa de Gotham
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+      <SelectContent>
+        <SelectItem value="investigare">
+          Investigación criminal
+        </SelectItem>
+        <SelectItem value="persequi">
+          Persecución de villanos
+        </SelectItem>
+        <SelectItem value="defendere">
+          Defensa de Gotham
+        </SelectItem>
+      </SelectContent>
+    </Select>
+  </div>
 
-              <div class="space-y-2">
-                <Label for="message">Mensaje</Label>
-                <Textarea
-                  id="message"
-                  name="mensaje"
-                  required
-                />
-              </div>
+  <div class="space-y-2">
+    <Label for="message">Mensaje</Label>
+    <Textarea
+      id="message"
+      name="mensaje"
+      required
+    />
+  </div>
 
-              <div class="space-y-2">
-                <Label>Fecha de la misión</Label>
+  <div class="space-y-2">
+    <Label>Fecha de la misión</Label>
 
-                <Popover>
-                  <PopoverTrigger as-child>
-                    <Button type="button" variant="outline">
-                      <span v-if="dies">
-                        {{ dies.day }}/{{ dies.month }}/{{ dies.year }}
-                      </span>
-                      <span v-else>
-                        Selecciona una fecha
-                      </span>
-                    </Button>
-                  </PopoverTrigger>
+    <Popover>
+      <PopoverTrigger as-child>
+        <Button type="button" variant="outline">
+          <span v-if="dies">
+            {{ dies.day }}/{{ dies.month }}/{{ dies.year }}
+          </span>
+          <span v-else>
+            Selecciona una fecha
+          </span>
+        </Button>
+      </PopoverTrigger>
 
-                  <PopoverContent class="w-auto p-0">
-                    <Calendar v-model="dies" />
-                  </PopoverContent>
-                </Popover>
-              </div>
+      <PopoverContent class="w-auto p-0">
+        <Calendar v-model="dies" />
+      </PopoverContent>
+    </Popover>
+  </div>
 
-              Poner un botón para enviar la solicitud
-            </form>
+  <Button
+    type="submit"
+    :disabled="estLoading"
+    class="w-full bg-purple-600 text-white hover:bg-purple-700"
+  >
+    <Loader2
+      v-if="estLoading"
+      class="mr-2 h-4 w-4 animate-spin"
+    />
+    <span>
+      {{ estLoading ? 'Enviando...' : 'Enviar Solicitud' }}
+    </span>
+  </Button>
+</form>
           </div>
         </div>
       </div>
     </section>
 
     <footer class="w-full bg-gray-900 py-12 text-gray-300">
-      <div
-        class="mx-auto flex max-w-3xl flex-col gap-8 md:flex-row md:justify-around"
-      >
-        <div class="space-y-4 text-center md:text-left">
-          <h3 class="text-xl font-bold text-white">
-            Información de Contacto
-          </h3>
+  <div
+    class="mx-auto flex max-w-3xl flex-col gap-8 px-4 md:flex-row md:justify-around"
+  >
+    <div class="space-y-4 text-center md:text-left">
+      <h3 class="text-xl font-bold text-white">
+        Información de Contacto
+      </h3>
 
-          <div class="space-y-2">
-            <p class="flex items-center justify-center gap-2 md:justify-start">
-              +1 (555) 123-4567
-            </p>
+      <div class="space-y-2">
+        <p class="flex items-center justify-center gap-2 md:justify-start">
+          <Phone class="h-4 w-4 shrink-0" />
+          <span>+1 (555) 123-4567</span>
+        </p>
 
-            <p class="flex items-center justify-center gap-2 md:justify-start">
-              batman@wayneenterprises.com
-            </p>
+        <p class="flex items-center justify-center gap-2 md:justify-start">
+          <Mail class="h-4 w-4 shrink-0" />
+          <span>batman@wayneenterprises.com</span>
+        </p>
 
-            <p class="flex items-center justify-center gap-2 md:justify-start">
-              Wayne Manor, Gotham City
-            </p>
-          </div>
-        </div>
-
-        <div class="space-y-4 text-center text-gray-400 md:text-left">
-          <h3 class="text-xl font-bold text-white">
-            Síguenos
-          </h3>
-
-          <div class="flex justify-center gap-8">
-            Icono de X -
-            Icono de Instagram -
-            Icono de Linkedin -
-            Icono de MessageCircle
-          </div>
-        </div>
+        <p class="flex items-center justify-center gap-2 md:justify-start">
+          <MapPin class="h-4 w-4 shrink-0" />
+          <span>Wayne Manor, Gotham City</span>
+        </p>
       </div>
-    </footer>
+    </div>
+
+    <div class="space-y-4 text-center text-gray-400 md:text-left">
+      <h3 class="text-xl font-bold text-white">
+        Síguenos
+      </h3>
+
+      <div class="flex justify-center gap-8">
+        <X
+          aria-label="X"
+          class="h-10 w-10 hover:text-white"
+        />
+        <Icon
+          icon="mdi:instagram"
+          aria-label="Instagram"
+          class="h-10 w-10 hover:text-white"
+        />
+        <Icon
+          icon="mdi:linkedin"
+          aria-label="LinkedIn"
+          class="h-10 w-10 hover:text-white"
+        />
+        <MessageCircle
+          aria-label="Messaggi"
+          class="h-10 w-10 hover:text-white"
+        />
+      </div>
+    </div>
+  </div>
+</footer>
   </div>
 </template>
 
