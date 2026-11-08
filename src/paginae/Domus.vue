@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -13,6 +13,20 @@ import { Input } from '@/components/ui/input'
 import { ref } from 'vue'
 const dialogApertaEst = ref<boolean>(false)
 const quaestio = ref<string>("")
+const router = useRouter()
+const cumKeyPressumEnter = (eventus: KeyboardEvent) => {
+  if (eventus.key === "Enter") {
+    const textusItinerans = quaestio.value.trim()
+
+    if (textusItinerans.length > 8 && textusItinerans.endsWith("?")) {
+      dialogApertaEst.value = false
+      router.push({
+        path: '/indecision',
+        state: { quaestio: textusItinerans }
+      })
+    }
+  }
+}
 </script>
 
 <template>
@@ -75,6 +89,7 @@ const quaestio = ref<string>("")
       <Input
   v-model="quaestio"
   placeholder="Escribe aquí tu pregunta..."
+  @keydown="cumKeyPressumEnter"
 />
     </div>
   </DialogContent>

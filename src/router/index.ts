@@ -37,7 +37,7 @@ const router = createRouter({
       component: Batman,
     },
     {
-      path: '/responsum',
+     path: '/indecision',
       component: Responsum,
     },
     {
