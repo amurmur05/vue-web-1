@@ -44,13 +44,17 @@ import LogoSimpsons from '@/components/icones/LogoSimpsons.vue'
       <RouterView />
     </main>
 
-    <footer
-      class="border-t border-black bg-yellow-300 p-5 text-center text-sm"
-    >
-      <p>All Rights Reserved — © Matt Groening</p>
-      <p class="mt-1 text-xs">
-        This app was made by Aurora Murrocu
-      </p>
-    </footer>
+   <footer
+  class="border-t border-black bg-yellow-300 p-5 text-center text-sm"
+>
+  <div>
+    <strong>All Rights Reserved</strong>
+    - Oh Lord Matt Groening - 1989-2027
+  </div>
+
+  <small>
+    This app was done by Aurora Murrocu
+  </small>
+</footer>
   </div>
 </template>
