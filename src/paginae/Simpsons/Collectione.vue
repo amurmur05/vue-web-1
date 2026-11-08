@@ -2,7 +2,9 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { computed, ref } from 'vue'
 import { characters } from './data'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const inPagina = 6
 
 const nuncPagina = ref(1)
@@ -43,17 +45,20 @@ const paginaNumeri: number[] = [...Array(totalPaginae)].map((_, i) => i + 1)
         class="h-[240px] w-[220px] cursor-pointer
                transition-colors hover:bg-red-500 hover:text-white"
       >
-        <CardContent class="flex w-full flex-col items-center gap-1 px-0">
-          <img
-            :src="`/imagines/simpsons/${character.imago}`"
-            class="mt-2 h-42 w-48 rounded-md border border-black
-                   bg-yellow-300 object-cover object-top"
-          />
+       <CardContent
+  @click="router.push(`/simpsons/gallery/${character.id}`)"
+  class="flex w-full flex-col items-center gap-1 px-0"
+>
+  <img
+    :src="`/imagines/simpsons/${character.imago}`"
+    class="mt-2 h-42 w-48 rounded-md border border-black
+           bg-yellow-300 object-cover object-top"
+  />
 
-          <h2 class="text-lg font-medium">
-            {{ character.nomen }}
-          </h2>
-        </CardContent>
+  <h2 class="text-lg font-medium">
+    {{ character.nomen }}
+  </h2>
+</CardContent>
       </Card>
     </div>
     <div class="mt-4 flex items-center justify-center gap-2">
