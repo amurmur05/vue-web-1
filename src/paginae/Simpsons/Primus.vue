@@ -21,9 +21,9 @@ import LogoSimpsons from '@/components/icones/LogoSimpsons.vue'
         <RouterLink to="/">Exit</RouterLink>
       </Button>
 
-      <Button type="button" variant="tertiarius"size="elongatis">
-        Enter
-      </Button>
+      <Button as-child variant="tertiarius" size="elongatis">
+  <RouterLink to="/simpsons/gallery">Enter</RouterLink>
+</Button>
     </div>
  <div class="flex gap-12">
   <img
