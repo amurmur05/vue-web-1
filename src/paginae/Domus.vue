@@ -1,6 +1,18 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import { Button } from '@/components/ui/button'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { ref } from 'vue'
+const dialogApertaEst = ref<boolean>(false)
+const quaestio = ref<string>("")
 </script>
 
 <template>
@@ -31,14 +43,42 @@ import { Button } from '@/components/ui/button'
     </p>
 
     <div class="flex flex-wrap justify-center gap-3">
-      <Button
-        as-child
-        class="bg-[rgb(24,182,246)] text-white
-               hover:bg-[rgba(24,182,246,0.7)]
-               md:px-6 md:py-5 md:text-lg"
-      >
-        <RouterLink to="/responsum">Sí o No</RouterLink>
-      </Button>
+     <Dialog
+  :open="dialogApertaEst"
+  @update:open="dialogApertaEst = $event"
+>
+  <DialogTrigger as-child>
+    <Button
+      class="bg-[rgb(24,182,246)] text-white
+             hover:bg-[rgba(24,182,246,0.7)]
+             md:px-6 md:py-5 md:text-lg"
+    >
+      Sí o No
+    </Button>
+  </DialogTrigger>
+
+  <DialogContent
+    class="sm:max-w-[425px] bg-[rgb(21,25,52)]
+           text-white border-[rgb(24,182,246)]"
+  >
+    <DialogHeader>
+      <DialogTitle style="color: white">
+        Pregúntame
+      </DialogTitle>
+
+      <DialogDescription class="text-gray-300">
+        No sigas con tus dudas, yo te responderé Sí o NO.
+      </DialogDescription>
+    </DialogHeader>
+
+    <div class="mt-4">
+      <Input
+  v-model="quaestio"
+  placeholder="Escribe aquí tu pregunta..."
+/>
+    </div>
+  </DialogContent>
+</Dialog>
 
       <Button
         as-child
